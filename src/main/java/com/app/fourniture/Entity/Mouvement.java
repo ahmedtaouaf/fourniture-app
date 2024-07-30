@@ -3,6 +3,7 @@ package com.app.fourniture.Entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -12,7 +13,7 @@ public class Mouvement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date date;
+    private LocalDateTime date;
 
     private Integer quantiteMvn;
 
@@ -27,5 +28,10 @@ public class Mouvement {
     @ManyToOne
     @JoinColumn(name = "etatmouvement_id", nullable = false)
     private EtatMouvement etatMouvement;
+
+    @PrePersist
+    protected void onCreate() {
+        date = LocalDateTime.now();
+    }
 }
 
