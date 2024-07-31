@@ -54,10 +54,7 @@
         <div class="container-fluid">
             <div class="row page-titles mx-0">
                 <div class="col-sm-6 p-md-0">
-                    <div class="welcome-text">
-                        <h4>Hi, welcome back!</h4>
-                        <p class="mb-0">Your business dashboard template</p>
-                    </div>
+
 
                 </div>
                 <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
@@ -70,6 +67,14 @@
             <!-- row -->
             <div class="row">
                 <div class="col-xl-12 col-xxl-12">
+                    <div th:if="${stockError}" class="alert alert-danger" role="alert">
+                        <i class="dripicons-checkmark me-2"></i>
+                        <strong th:text="${stockError}"></strong>
+                    </div>
+                    <div th:if="${mouvemententree}" class="alert alert-success" role="alert">
+                        <i class="dripicons-checkmark me-2"></i>
+                        <strong th:text="${mouvemententree}"></strong>
+                    </div>
                     <div th:if="${mouvementajouter}" class="alert alert-success" role="alert">
                         <i class="dripicons-checkmark me-2"></i>
                         <strong th:text="${mouvementajouter}"></strong>
@@ -81,42 +86,40 @@
                         <div class="card-body text-center">
                             <div class="basic-form">
                                 <form action="#" th:action="@{/mouvement/save}" th:object="${mouvement}" method="post">
-                            <div class="row">
-                                    <div class="col-lg-6 mb-6">
-                                        <div class="form-group">
-                                            <label for="produit" class="text-label" >Produit*</label>
-                                            <select id="produit" class="disabling-options" th:field="*{produit}" required>
-                                                <option th:each="produit : ${produits}"
-                                                        th:value="${produit.id}"
-                                                        th:text="${produit.libelle}">Produit</option>
-                                            </select>
+                                    <div class="row">
+                                        <div class="col-lg-6 mb-6">
+                                            <div class="form-group">
+                                                <label for="produit" class="text-label">Produit*</label>
+                                                <select id="produit" class="disabling-options" th:field="*{produit}" required>
+                                                    <option th:each="produit : ${produits}"
+                                                            th:value="${produit.id}"
+                                                            th:text="${produit.libelle}">Produit</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="etatMouvement" class="text-label">Etat Mouvement*</label>
+                                                <select id="etatMouvement" class="disabling-options" th:field="*{etatMouvement}" required>
+                                                    <option th:each="etatMouvement : ${etatMouvements}"
+                                                            th:value="${etatMouvement.id}"
+                                                            th:text="${etatMouvement.libelle}">Etat Mouvement</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="etatMouvement" class="text-label" >Etat Mouvement*</label>
-                                            <select id="etatMouvement" class="disabling-options" th:field="*{etatMouvement}" required>
-                                                <option th:each="etatMouvement : ${etatMouvements}"
-                                                        th:value="${etatMouvement.id}"
-                                                        th:text="${etatMouvement.libelle}">Etat Mouvement</option>
-                                            </select>
+                                        <div class="col-lg-6 mb-6">
+                                            <div class="form-group">
+                                                <label for="beneficiaire" class="text-label">Bénéficiaire*</label>
+                                                <select id="beneficiaire" class="disabling-options" th:field="*{beneficiaire}" required>
+                                                    <option th:each="beneficiaire : ${beneficiaires}"
+                                                            th:value="${beneficiaire.id}"
+                                                            th:text="${beneficiaire.libelle}">Beneficiaire</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Quantité</label>
+                                                <input type="number" id="quantiteMvn" th:field="*{quantiteMvn}" class="form-control" placeholder="Quantité" required>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 mb-6">
-                                        <div class="form-group">
-                                            <label for="beneficiaire" class="text-label">Bénéficiaire*</label>
-                                            <select id="beneficiaire" class="disabling-options" th:field="*{beneficiaire}" required>
-                                                <option th:each="beneficiaire : ${beneficiaires}"
-                                                        th:value="${beneficiaire.id}"
-                                                        th:text="${beneficiaire.libelle}">Beneficiaire</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                        <label>Quantité</label>
-                                        <input type="number" id="quantiteMvn" th:field="*{quantiteMvn}" class="form-control" placeholder="Quantité" required>
-                                        </div>
-                                    </div>
-
-                              </div>
-
 
                                     <button type="submit" class="btn btn-primary text-center">Enregistrer</button>
                                 </form>
@@ -156,7 +159,31 @@
 <script src="/vendor/global/global.min.js"></script>
 <script src="/js/quixnav-init.js"></script>
 <script src="/js/custom.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#etatMouvement').change(function() {
+            var etatMouvement = $(this).find('option:selected').text();
+            console.log("Selected Etat Mouvement: " + etatMouvement);  // Add this line for debugging
+            $.ajax({
+                url: '/beneficiaires/filter',
+                type: 'GET',
+                data: {
+                    etatMouvement: etatMouvement
+                },
+                success: function(data) {
+                    $('#beneficiaire').empty();
+                    $.each(data, function(index, beneficiaire) {
+                        $('#beneficiaire').append($('<option>', {
+                            value: beneficiaire.id,
+                            text: beneficiaire.libelle
+                        }));
+                    });
+                }
+            });
+        });
+    });
 
+</script>
 
 <!-- Vectormap -->
 <script src="/vendor/raphael/raphael.min.js"></script>

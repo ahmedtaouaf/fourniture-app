@@ -22,4 +22,9 @@ public class BeneficiaireService {
 
         return beneficiaireRepository.findAll();
     }
+    public List<Beneficiaire> findBeneficiairesByLibelleIn(List<String> libelles) {
+        List<Beneficiaire> beneficiaires = beneficiaireRepository.findByLibelleIn(libelles);
+        System.out.println("Beneficiaires matching libelles: " + libelles + " are " + beneficiaires);  // Log the result
+        return beneficiaires;
+    }
 }

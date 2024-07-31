@@ -1,5 +1,6 @@
 package com.app.fourniture.Controllers;
 
+import com.app.fourniture.Entity.Beneficiaire;
 import com.app.fourniture.Entity.Mouvement;
 import com.app.fourniture.Entity.Produit;
 import com.app.fourniture.Service.BeneficiaireService;
@@ -9,12 +10,12 @@ import com.app.fourniture.Service.ProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class MouvementController {
@@ -42,18 +43,45 @@ public class MouvementController {
 
     @PostMapping("/mouvement/save")
     public String saveMouvement(@ModelAttribute("mouvement") Mouvement mouvement, RedirectAttributes redirectAttributes) {
-        // Update product quantity if EtatMouvement is "Sortie"
         if (mouvement.getEtatMouvement().getLibelle().equalsIgnoreCase("Sortie")) {
             Produit produit = mouvement.getProduit();
+            if (mouvement.getQuantiteMvn() > produit.getQuantite()) {
+                redirectAttributes.addFlashAttribute("stockError", "La quantité du mouvement dépasse la quantité disponible du produit.");
+                return "redirect:/mouvement/new";
+            }
             produit.setQuantite(produit.getQuantite() - mouvement.getQuantiteMvn());
             produitService.save(produit);
+            redirectAttributes.addFlashAttribute("mouvementajouter", "Mouvement ajouté avec succès.");
+        }
+        else if (mouvement.getEtatMouvement().getLibelle().equalsIgnoreCase("ENTREE")) {
+            Produit produit = mouvement.getProduit();
+
+            produit.setQuantite(produit.getQuantite() + mouvement.getQuantiteMvn());
+            produitService.save(produit);
+            redirectAttributes.addFlashAttribute("mouvemententree", "Mouvement Entree bien enregistrer.");
         }
 
         mouvementService.save(mouvement);
-        redirectAttributes.addFlashAttribute("mouvementajouter", "Mouvement ajouté avec succès.");
+
 
         return "redirect:/mouvement/new";
     }
+
+    @GetMapping("/beneficiaires/filter")
+    @ResponseBody
+    public List<Beneficiaire> getFilteredBeneficiaires(@RequestParam("etatMouvement") String etatMouvement) {
+        System.out.println("Received Etat Mouvement: " + etatMouvement);  // Log the received parameter
+        if (etatMouvement.equalsIgnoreCase("ENTREE")) {
+            List<Beneficiaire> filteredBeneficiaires = beneficiaireService.findBeneficiairesByLibelleIn(Arrays.asList("CABINET", "DINFO", "DRH"));
+            System.out.println("Filtered Beneficiaires for ENTREE: " + filteredBeneficiaires);
+            return filteredBeneficiaires;
+        } else {
+            List<Beneficiaire> allBeneficiaires = beneficiaireService.afficherBeneficiaires();
+            System.out.println("All Beneficiaires: " + allBeneficiaires);
+            return allBeneficiaires;
+        }
+    }
+
 
 
 }
