@@ -43,7 +43,7 @@ public class MouvementController {
 
     @PostMapping("/mouvement/save")
     public String saveMouvement(@ModelAttribute("mouvement") Mouvement mouvement, RedirectAttributes redirectAttributes) {
-        if (mouvement.getEtatMouvement().getLibelle().equalsIgnoreCase("Sortie")) {
+        if (mouvement.getEtatMouvement().getLibelle().equalsIgnoreCase("SORTIE")) {
             Produit produit = mouvement.getProduit();
             if (mouvement.getQuantiteMvn() > produit.getQuantite()) {
                 redirectAttributes.addFlashAttribute("stockError", "La quantité du mouvement dépasse la quantité disponible du produit.");
@@ -60,6 +60,12 @@ public class MouvementController {
             produitService.save(produit);
             redirectAttributes.addFlashAttribute("mouvemententree", "Mouvement Entree bien enregistrer.");
         }
+        else if (mouvement.getEtatMouvement().getLibelle().equalsIgnoreCase("EN COURS")) {
+            Produit produit = mouvement.getProduit();
+
+            produitService.save(produit);
+            redirectAttributes.addFlashAttribute("mouvementencours", "Mouvement En cours bien enregistrer.");
+        }
 
         mouvementService.save(mouvement);
 
@@ -75,12 +81,25 @@ public class MouvementController {
             List<Beneficiaire> filteredBeneficiaires = beneficiaireService.findBeneficiairesByLibelleIn(Arrays.asList("CABINET", "DINFO", "DRH"));
             System.out.println("Filtered Beneficiaires for ENTREE: " + filteredBeneficiaires);
             return filteredBeneficiaires;
+        } else if (etatMouvement.equalsIgnoreCase("EN COURS")) {
+            List<Beneficiaire> filteredBeneficiaires = beneficiaireService.findBeneficiairesByLibelleIn(Arrays.asList("CABINET", "DII"));
+            System.out.println("Filtered Beneficiaires for EN COURS: " + filteredBeneficiaires);
+            return filteredBeneficiaires;
         } else {
             List<Beneficiaire> allBeneficiaires = beneficiaireService.afficherBeneficiaires();
             System.out.println("All Beneficiaires: " + allBeneficiaires);
             return allBeneficiaires;
         }
     }
+
+
+    @GetMapping("/mouvement/liste")
+    public String listeMouvements(Model model){
+
+        model.addAttribute("mouvements", mouvementService.findAll());
+        return "mouvementListe";
+    }
+
 
 
 

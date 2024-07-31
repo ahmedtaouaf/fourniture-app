@@ -71,13 +71,17 @@
                         <i class="dripicons-checkmark me-2"></i>
                         <strong th:text="${stockError}"></strong>
                     </div>
-                    <div th:if="${mouvemententree}" class="alert alert-danger" role="alert">
+                    <div th:if="${mouvemententree}" class="alert alert-success" role="alert">
                         <i class="dripicons-checkmark me-2"></i>
                         <strong th:text="${mouvemententree}"></strong>
                     </div>
                     <div th:if="${mouvementajouter}" class="alert alert-success" role="alert">
                         <i class="dripicons-checkmark me-2"></i>
                         <strong th:text="${mouvementajouter}"></strong>
+                    </div>
+                    <div th:if="${mouvementencours}" class="alert alert-success" role="alert">
+                        <i class="dripicons-checkmark me-2"></i>
+                        <strong th:text="${mouvementencours}"></strong>
                     </div>
                     <div class="card">
                         <div class="card-header">
@@ -182,6 +186,7 @@
             });
         });
     });
+
 
 </script>
 
