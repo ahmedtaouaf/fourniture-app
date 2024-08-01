@@ -11,4 +11,6 @@ public interface BeneficiaireRepository extends JpaRepository<Beneficiaire, Long
 
     List<Beneficiaire> findByLibelleIn(List<String> libelles);
 
+    List<Beneficiaire> findByiste(Boolean iste);
+
 }

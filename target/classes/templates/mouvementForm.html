@@ -83,6 +83,10 @@
                         <i class="dripicons-checkmark me-2"></i>
                         <strong th:text="${mouvementencours}"></strong>
                     </div>
+                    <div th:if="${mouvementavance}" class="alert alert-success" role="alert">
+                        <i class="dripicons-checkmark me-2"></i>
+                        <strong th:text="${mouvementavance}"></strong>
+                    </div>
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Ajouter des produits</h4>

@@ -60,7 +60,7 @@
                 <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="javascript:void(0)">Mouvements</a></li>
-                        <li class="breadcrumb-item active"><a href="javascript:void(0)">L'ajout</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Liste</a></li>
                     </ol>
                 </div>
             </div>
@@ -92,10 +92,10 @@
                                             <td th:text="${mouvement.date}"></td>
                                             <td th:text="${mouvement.beneficiaire.libelle}"></td>
                                             <td th:text="${mouvement.quantiteMvn}"></td>
-                                            <td th:if="${mouvement.etatMouvement.libelle=='ENTREE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-success"></span></td>
-                                            <td th:if="${mouvement.etatMouvement.libelle=='SORTIE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-info"></span></td>
+                                            <td th:if="${mouvement.etatMouvement.libelle=='ENTREE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-info"></span></td>
+                                            <td th:if="${mouvement.etatMouvement.libelle=='SORTIE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-success"></span></td>
                                             <td th:if="${mouvement.etatMouvement.libelle=='EN COURS'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-warning"></span></td>
-                                            <td th:if="${mouvement.etatMouvement.libelle=='AVANCE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-warning"></span></td>
+                                            <td th:if="${mouvement.etatMouvement.libelle=='AVANCE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-danger"></span></td>
                                         </tr>
                                         </tbody>
                                     </table>

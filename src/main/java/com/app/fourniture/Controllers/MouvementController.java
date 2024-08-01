@@ -51,7 +51,7 @@ public class MouvementController {
             }
             produit.setQuantite(produit.getQuantite() - mouvement.getQuantiteMvn());
             produitService.save(produit);
-            redirectAttributes.addFlashAttribute("mouvementajouter", "Mouvement ajouté avec succès.");
+            redirectAttributes.addFlashAttribute("mouvementajouter", "Mouvement Sortie ajouté avec succès.");
         }
         else if (mouvement.getEtatMouvement().getLibelle().equalsIgnoreCase("ENTREE")) {
             Produit produit = mouvement.getProduit();
@@ -67,6 +67,17 @@ public class MouvementController {
             redirectAttributes.addFlashAttribute("mouvementencours", "Mouvement En cours bien enregistrer.");
         }
 
+        else if (mouvement.getEtatMouvement().getLibelle().equalsIgnoreCase("AVANCE")) {
+            Produit produit = mouvement.getProduit();
+            if (mouvement.getQuantiteMvn() > produit.getQuantite()) {
+                redirectAttributes.addFlashAttribute("stockError", "La quantité du mouvement dépasse la quantité disponible du produit.");
+                return "redirect:/mouvement/new";
+            }
+            produit.setQuantite(produit.getQuantite() - mouvement.getQuantiteMvn());
+            produitService.save(produit);
+            redirectAttributes.addFlashAttribute("mouvementavance", "Mouvement Avance ajouté avec succès.");
+        }
+
         mouvementService.save(mouvement);
 
 
@@ -76,8 +87,9 @@ public class MouvementController {
     @GetMapping("/beneficiaires/filter")
     @ResponseBody
     public List<Beneficiaire> getFilteredBeneficiaires(@RequestParam("etatMouvement") String etatMouvement) {
-        System.out.println("Received Etat Mouvement: " + etatMouvement);  // Log the received parameter
-        if (etatMouvement.equalsIgnoreCase("ENTREE")) {
+
+
+        /*if (etatMouvement.equalsIgnoreCase("ENTREE")) {
             List<Beneficiaire> filteredBeneficiaires = beneficiaireService.findBeneficiairesByLibelleIn(Arrays.asList("CABINET", "DINFO", "DRH"));
             System.out.println("Filtered Beneficiaires for ENTREE: " + filteredBeneficiaires);
             return filteredBeneficiaires;
@@ -89,8 +101,37 @@ public class MouvementController {
             List<Beneficiaire> allBeneficiaires = beneficiaireService.afficherBeneficiaires();
             System.out.println("All Beneficiaires: " + allBeneficiaires);
             return allBeneficiaires;
+        }*/
+
+        if (etatMouvement.equalsIgnoreCase("ENTREE")) {
+            List<Beneficiaire> filteredBeneficiaires = beneficiaireService.findBeneficiairesByste(true);
+            System.out.println("Filtered Beneficiaires for ENTREE: " + filteredBeneficiaires);
+            return filteredBeneficiaires;
+        } else if (etatMouvement.equalsIgnoreCase("EN COURS")) {
+            List<Beneficiaire> filteredBeneficiaires = beneficiaireService.findBeneficiairesByste(false);
+            System.out.println("Filtered Beneficiaires for EN COURS: " + filteredBeneficiaires);
+            return filteredBeneficiaires;
         }
+        else if (etatMouvement.equalsIgnoreCase("SORTIE")) {
+            List<Beneficiaire> filteredBeneficiaires = beneficiaireService.findBeneficiairesByste(false);
+            System.out.println("Filtered Beneficiaires for EN COURS: " + filteredBeneficiaires);
+            return filteredBeneficiaires;
+        }
+        else if (etatMouvement.equalsIgnoreCase("AVANCE")) {
+            List<Beneficiaire> filteredBeneficiaires = beneficiaireService.findBeneficiairesByste(false);
+            System.out.println("Filtered Beneficiaires for EN COURS: " + filteredBeneficiaires);
+            return filteredBeneficiaires;
+        }
+        else {
+            List<Beneficiaire> allBeneficiaires = beneficiaireService.afficherBeneficiaires();
+            System.out.println("All Beneficiaires: " + allBeneficiaires);
+            return allBeneficiaires;
+        }
+
+
     }
+
+
 
 
     @GetMapping("/mouvement/liste")

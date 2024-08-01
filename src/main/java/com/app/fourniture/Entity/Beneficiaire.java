@@ -15,4 +15,6 @@ public class Beneficiaire {
     private Long id;
 
     private String libelle;
+
+    private Boolean iste ;
 }

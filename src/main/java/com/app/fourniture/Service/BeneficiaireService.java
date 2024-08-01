@@ -27,4 +27,10 @@ public class BeneficiaireService {
         System.out.println("Beneficiaires matching libelles: " + libelles + " are " + beneficiaires);  // Log the result
         return beneficiaires;
     }
+
+    public List<Beneficiaire> findBeneficiairesByste(Boolean iste) {
+
+        List<Beneficiaire> beneficiaires = beneficiaireRepository.findByiste(iste);
+        return beneficiaires;
+    }
 }

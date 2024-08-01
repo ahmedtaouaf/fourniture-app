@@ -22,6 +22,11 @@ public class ProduitService {
         return produitRepository.findAll();
     }
 
+    public Integer totalProduits() {
+
+        return produitRepository.totalproduits();
+    }
+
     public void supprimerProduit(long id) {
 
         produitRepository.deleteById(id);
