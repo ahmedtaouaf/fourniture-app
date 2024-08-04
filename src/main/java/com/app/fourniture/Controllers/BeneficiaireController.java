@@ -1,6 +1,7 @@
 package com.app.fourniture.Controllers;
 
 import com.app.fourniture.Entity.Beneficiaire;
+import com.app.fourniture.Entity.Mouvement;
 import com.app.fourniture.Entity.Produit;
 import com.app.fourniture.Service.BeneficiaireService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +28,16 @@ public class BeneficiaireController {
         return "listebeneficiaires";
     }
     @GetMapping("/beneficiaires-ajout")
-    public String benefAjout(){
+    public String benefAjout(Model model){
 
+        model.addAttribute("beneficiaire", new Beneficiaire());
         return "ajoutbeneficiaire";
     }
     @PostMapping("/addbeneficiaire")
     public String addBeneficiaire(@ModelAttribute Beneficiaire beneficiaire, RedirectAttributes redirectAttributes) {
 
         beneficiaireService.ajouterBeneficiaire(beneficiaire);
-        redirectAttributes.addFlashAttribute("beneficiaireajouter", "Bénéficiaire ajouté avec succès au stock !");
+        redirectAttributes.addFlashAttribute("beneficiaireajouter", "Bénéficiaire ajouté avec succès !");
         return "redirect:/beneficiaires-ajout";
     }
 

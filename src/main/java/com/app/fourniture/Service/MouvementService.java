@@ -28,4 +28,9 @@ public class MouvementService {
     public void deleteById(Long id) {
         mouvementRepository.deleteById(id);
     }
+
+    public Integer totalMvns() {
+
+        return mouvementRepository.totalMvn();
+    }
 }

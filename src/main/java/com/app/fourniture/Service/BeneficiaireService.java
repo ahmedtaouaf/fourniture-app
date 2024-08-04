@@ -33,4 +33,9 @@ public class BeneficiaireService {
         List<Beneficiaire> beneficiaires = beneficiaireRepository.findByiste(iste);
         return beneficiaires;
     }
+
+    public Integer totalBeneficiaire() {
+
+        return beneficiaireRepository.totalbeneficaire();
+    }
 }

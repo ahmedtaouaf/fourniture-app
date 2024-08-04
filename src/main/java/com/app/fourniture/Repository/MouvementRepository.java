@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MouvementRepository extends JpaRepository<Mouvement, Long> {
 
-
+    @Query("select count (m) from Mouvement m")
+    int totalMvn();
 
 
 }
