@@ -3,6 +3,8 @@ package com.app.fourniture.Service;
 import com.app.fourniture.Entity.Mouvement;
 import com.app.fourniture.Repository.MouvementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +15,8 @@ public class MouvementService {
     @Autowired
     private MouvementRepository mouvementRepository;
 
-    public List<Mouvement> findAll() {
-        return mouvementRepository.findAll();
+    public Page<Mouvement> findAll(Pageable pageable) {
+        return mouvementRepository.findAll(pageable);
     }
 
     public Mouvement findById(Long id) {
@@ -32,5 +34,9 @@ public class MouvementService {
     public Integer totalMvns() {
 
         return mouvementRepository.totalMvn();
+    }
+
+    public List<Mouvement> beneficiaireByEtatAvance(Long beneficiaire) {
+        return mouvementRepository.beneficiairebyetatavance(beneficiaire);
     }
 }

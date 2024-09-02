@@ -5,14 +5,31 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Focus - Bootstrap Admin Dashboard </title>
+    <title>Application Forniture - Liste Produits</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon.png">
     <link rel="stylesheet" href="./vendor/owl-carousel/css/owl.carousel.min.css">
     <link rel="stylesheet" href="./vendor/owl-carousel/css/owl.theme.default.min.css">
     <link href="./vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet">
     <link href="./css/style.css" rel="stylesheet">
+<style>
 
+    .form-inline {
+        display: flex;
+        align-items: center; /* Aligns items vertically */
+        gap: 10px; /* Space between elements */
+    }
+
+    .form-inline .form-control {
+        margin-right: 10px; /* Space between the input and buttons */
+    }
+
+    .form-inline .btn {
+        margin: 0; /* Remove default margins if needed */
+    }
+
+
+</style>
 
 
 </head>
@@ -67,34 +84,71 @@
                 <!-- row -->
                 <div class="row">
                     <div class="col-xl-12 col-xxl-12">
+                        <!-- Alert Messages -->
+                        <div th:if="${quantiteAugmenter}" class="alert alert-success" role="alert">
+                            <i class="dripicons-checkmark me-2"></i>
+                            <strong th:text="${quantiteAugmenter}"></strong>
+                        </div>
+                        <div th:if="${quantiteReduit}" class="alert alert-warning" role="alert">
+                            <i class="dripicons-checkmark me-2"></i>
+                            <strong th:text="${quantiteReduit}"></strong>
+                        </div>
+                        <!-- Product List -->
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="card-title">Liste des produits</h4>
                             </div>
                             <div class="card-body">
-
                                 <div class="table-responsive">
                                     <table class="table table-responsive-sm">
                                         <thead>
                                         <tr>
                                             <th>Produit</th>
-                                            <th>quantité</th>
+                                            <th>Quantité Actuelle</th>
+                                            <th>Modifier la Quantité</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="produit: ${produitList}">
+                                        <tr th:each="produit : ${produitList}">
                                             <td th:text="${produit.libelle}"></td>
-                                            <td><span th:text="${produit.quantite}+' PCS'"></span></td>
+                                            <td><span th:text="${produit.quantite} + ' PCS'"></span></td>
+                                            <td>
+                                                <form th:action="@{/produit-modifier}" method="post" class="form-inline">
+                                                    <input type="hidden" name="produitId" th:value="${produit.id}" />
+                                                    <input type="number" name="quantite" min="0" class="form-control input-rounded" placeholder="Entrez la quantité" style="width: 150px;" required>
+                                                    <button type="submit" name="action" value="augmenter" class="btn btn-success">Augmenter</button>
+                                                    <button type="submit" name="action" value="reduire" class="btn btn-warning">Réduire</button>
+                                                </form>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
                                 </div>
-
-
+                                <!-- Pagination Controls -->
+                                <div class="pagination">
+                                    <ul class="pagination justify-content-center">
+                                        <li th:classappend="${currentPage == 0} ? 'disabled'">
+                                            <a th:href="@{/produit-liste(page=${currentPage - 1})}" class="page-link">Previous</a>
+                                        </li>
+                                        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'">
+                                            <a th:href="@{/produit-liste(page=${i})}" class="page-link" th:text="${i + 1}">1</a>
+                                        </li>
+                                        <li th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
+                                            <a th:href="@{/produit-liste(page=${currentPage + 1})}" class="page-link">Next</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
+
+
+
+
+
             </div>
         </div>
         <!--**********************************

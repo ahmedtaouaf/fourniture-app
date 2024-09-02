@@ -17,4 +17,6 @@ public class Beneficiaire {
     private String libelle;
 
     private Boolean iste ;
+
+    private String avatar;
 }

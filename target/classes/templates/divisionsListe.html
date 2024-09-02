@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Application Forniture - Mouvement Liste</title>
+    <title>Application Forniture - Divisions Liste</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
     <link rel="stylesheet" href="/vendor/owl-carousel/css/owl.carousel.min.css">
@@ -53,13 +53,10 @@
     <div class="content-body">
         <div class="container-fluid">
             <div class="row page-titles mx-0">
-                <div class="col-sm-6 p-md-0">
-
-
-                </div>
+                <div class="col-sm-6 p-md-0"></div>
                 <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="javascript:void(0)">Mouvements</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Divisions</a></li>
                         <li class="breadcrumb-item active"><a href="javascript:void(0)">Liste</a></li>
                     </ol>
                 </div>
@@ -71,60 +68,33 @@
                         <div class="card-header">
                             <h4 class="card-title">Liste des mouvements</h4>
                         </div>
-
-                        <div class="card-body text-center">
-                            <div class="basic-form">
-                                <div class="table-responsive">
-                                    <table class="table table-responsive-sm">
-                                        <thead>
-                                        <tr>
-                                            <th>Produit</th>
-                                            <th>Date</th>
-                                            <th>Bénéficaire</th>
-                                            <th>Quantité</th>
-                                            <th>Etat</th>
-                                            <th>Action</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr th:each="mouvement: ${mouvementPage.content}">
-                                            <td th:text="${mouvement.produit.libelle}"></td>
-                                            <td th:text="${mouvement.date}"></td>
-                                            <td th:text="${mouvement.beneficiaire.libelle}"></td>
-                                            <td th:text="${mouvement.quantiteMvn}"></td>
-                                            <td th:if="${mouvement.etatMouvement.libelle=='ENTREE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-info"></span></td>
-                                            <td th:if="${mouvement.etatMouvement.libelle=='SORTIE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-success"></span></td>
-                                            <td th:if="${mouvement.etatMouvement.libelle=='EN COURS'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-warning"></span></td>
-                                            <td th:if="${mouvement.etatMouvement.libelle=='AVANCE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-danger"></span></td>
-                                            <td th:if="${mouvement.etatMouvement.libelle=='EN COURS'}"><a th:href="@{/mouvement/confirm/{id}(id=${mouvement.id})}" class="btn btn-primary btn-sm">Confirmer</a></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                        <div class="card-body">
+                            <!-- Row for cards -->
+                            <div class="row">
+                                <!-- Thymeleaf iteration -->
+                                <div th:each="beneficiaire : ${listedivisions}" class="col-xl-4 col-xxl-6 col-lg-6 col-sm-6 mb-4">
+                                    <div class="card mb-3">
+                                        <!-- Dynamic image source with default fallback -->
+                                        <img class="card-img-top"
+                                             th:src="${beneficiaire.avatar != null && beneficiaire.avatar.trim() != '' ? '/divisions/' + beneficiaire.avatar : '/divisions/dinfo.png'}"
+                                             alt="Card image cap"
+                                        >
+                                        <div class="card-body text-center">
+                                            <a th:href="@{/division/{id}(id=${beneficiaire.id})}" class="btn btn-primary" th:text="${beneficiaire.libelle}">Bénéficiaire Name</a>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <!-- Pagination Controls -->
-                                <div>
-                                    <ul class="pagination justify-content-center">
-                                        <li th:classappend="${mouvementPage.hasPrevious()} ? '' : 'disabled'">
-                                            <a class="page-link" th:href="@{/mouvement/liste(page=${mouvementPage.number - 1}, size=${mouvementPage.size})}">Précédent</a>
-                                        </li>
-                                        <li th:each="i : ${#numbers.sequence(1, mouvementPage.totalPages)}"
-                                            th:classappend="${mouvementPage.number + 1 == i} ? 'active'">
-                                            <a class="page-link" th:href="@{/mouvement/liste(page=${i - 1}, size=${mouvementPage.size})}" th:text="${i}"></a>
-                                        </li>
-                                        <li th:classappend="${mouvementPage.hasNext()} ? '' : 'disabled'">
-                                            <a class="page-link" th:href="@{/mouvement/liste(page=${mouvementPage.number + 1}, size=${mouvementPage.size})}">Suivant</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <!-- End Thymeleaf iteration -->
                             </div>
+                            <!-- End row for cards -->
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
+
+
     <!--**********************************
         Content body end
     ***********************************-->

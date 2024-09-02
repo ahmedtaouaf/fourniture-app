@@ -17,4 +17,7 @@ public interface BeneficiaireRepository extends JpaRepository<Beneficiaire, Long
     @Query("select count (b) from Beneficiaire b")
     int totalbeneficaire();
 
+    @Query("SELECT b FROM Beneficiaire b WHERE b.iste is false ")
+    List<Beneficiaire> listedivisions();
+
 }

@@ -3,6 +3,8 @@ package com.app.fourniture.Service;
 import com.app.fourniture.Entity.Produit;
 import com.app.fourniture.Repository.ProduitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +24,11 @@ public class ProduitService {
         return produitRepository.findAll();
     }
 
+    public Page<Produit> afficherProduits(Pageable pageable) {
+        return produitRepository.findAll(pageable);
+    }
+
+
     public Integer totalProduits() {
 
         return produitRepository.totalproduits();
@@ -33,5 +40,9 @@ public class ProduitService {
     }
     public Produit save(Produit produit) {
         return produitRepository.save(produit);
+    }
+
+    public Produit trouverProduitParId(Long id) {
+        return produitRepository.findById(id).orElse(null);
     }
 }

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Focus - Bootstrap Admin Dashboard </title>
+    <title>Application Forniture - Mouvement Liste</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
     <link rel="stylesheet" href="/vendor/owl-carousel/css/owl.carousel.min.css">
@@ -67,7 +67,6 @@
             <!-- row -->
             <div class="row">
                 <div class="col-xl-12 col-xxl-12">
-
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Liste des mouvements</h4>
@@ -84,10 +83,11 @@
                                             <th>Bénéficaire</th>
                                             <th>Quantité</th>
                                             <th>Etat</th>
+                                            <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="mouvement: ${mouvements}">
+                                        <tr th:each="mouvement: ${mouvementPage.content}">
                                             <td th:text="${mouvement.produit.libelle}"></td>
                                             <td th:text="${mouvement.date}"></td>
                                             <td th:text="${mouvement.beneficiaire.libelle}"></td>
@@ -96,16 +96,33 @@
                                             <td th:if="${mouvement.etatMouvement.libelle=='SORTIE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-success"></span></td>
                                             <td th:if="${mouvement.etatMouvement.libelle=='EN COURS'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-warning"></span></td>
                                             <td th:if="${mouvement.etatMouvement.libelle=='AVANCE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-danger"></span></td>
+                                            <td th:if="${mouvement.etatMouvement.libelle=='EN COURS'}"><a th:href="@{/mouvement/confirm/{id}(id=${mouvement.id})}" class="btn btn-primary btn-sm">Confirmer</a></td>
                                         </tr>
                                         </tbody>
                                     </table>
                                 </div>
+
+                                <!-- Pagination Controls -->
+                                <div>
+                                    <ul class="pagination justify-content-center">
+                                        <li th:classappend="${mouvementPage.hasPrevious()} ? '' : 'disabled'">
+                                            <a class="page-link" th:href="@{/mouvement/liste(page=${mouvementPage.number - 1}, size=${mouvementPage.size})}">Précédent</a>
+                                        </li>
+                                        <li th:each="i : ${#numbers.sequence(1, mouvementPage.totalPages)}"
+                                            th:classappend="${mouvementPage.number + 1 == i} ? 'active'">
+                                            <a class="page-link" th:href="@{/mouvement/liste(page=${i - 1}, size=${mouvementPage.size})}" th:text="${i}"></a>
+                                        </li>
+                                        <li th:classappend="${mouvementPage.hasNext()} ? '' : 'disabled'">
+                                            <a class="page-link" th:href="@{/mouvement/liste(page=${mouvementPage.number + 1}, size=${mouvementPage.size})}">Suivant</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
+
         </div>
     </div>
     <!--**********************************

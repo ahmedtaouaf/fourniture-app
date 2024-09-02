@@ -1,12 +1,14 @@
 package com.app.fourniture.Service;
 
 import com.app.fourniture.Entity.Beneficiaire;
+import com.app.fourniture.Entity.Mouvement;
 import com.app.fourniture.Entity.Produit;
 import com.app.fourniture.Repository.BeneficiaireRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BeneficiaireService {
@@ -38,4 +40,13 @@ public class BeneficiaireService {
 
         return beneficiaireRepository.totalbeneficaire();
     }
+    public List<Beneficiaire> listedivisions() {
+
+        return beneficiaireRepository.listedivisions();
+    }
+
+    public Beneficiaire findById(Long id) {
+        return beneficiaireRepository.findById(id).orElse(null);
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.app.fourniture.Controllers;
 
 import com.app.fourniture.Entity.Beneficiaire;
+import com.app.fourniture.Entity.EtatMouvement;
 import com.app.fourniture.Entity.Mouvement;
 import com.app.fourniture.Entity.Produit;
 import com.app.fourniture.Service.BeneficiaireService;
@@ -8,6 +9,9 @@ import com.app.fourniture.Service.EtatMouvementService;
 import com.app.fourniture.Service.MouvementService;
 import com.app.fourniture.Service.ProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -89,20 +93,6 @@ public class MouvementController {
     public List<Beneficiaire> getFilteredBeneficiaires(@RequestParam("etatMouvement") String etatMouvement) {
 
 
-        /*if (etatMouvement.equalsIgnoreCase("ENTREE")) {
-            List<Beneficiaire> filteredBeneficiaires = beneficiaireService.findBeneficiairesByLibelleIn(Arrays.asList("CABINET", "DINFO", "DRH"));
-            System.out.println("Filtered Beneficiaires for ENTREE: " + filteredBeneficiaires);
-            return filteredBeneficiaires;
-        } else if (etatMouvement.equalsIgnoreCase("EN COURS")) {
-            List<Beneficiaire> filteredBeneficiaires = beneficiaireService.findBeneficiairesByLibelleIn(Arrays.asList("CABINET", "DII"));
-            System.out.println("Filtered Beneficiaires for EN COURS: " + filteredBeneficiaires);
-            return filteredBeneficiaires;
-        } else {
-            List<Beneficiaire> allBeneficiaires = beneficiaireService.afficherBeneficiaires();
-            System.out.println("All Beneficiaires: " + allBeneficiaires);
-            return allBeneficiaires;
-        }*/
-
         if (etatMouvement.equalsIgnoreCase("ENTREE")) {
             List<Beneficiaire> filteredBeneficiaires = beneficiaireService.findBeneficiairesByste(true);
             System.out.println("Filtered Beneficiaires for ENTREE: " + filteredBeneficiaires);
@@ -132,14 +122,52 @@ public class MouvementController {
     }
 
 
-
-
-    @GetMapping("/mouvement/liste")
+/*    @GetMapping("/mouvement/liste")
     public String listeMouvements(Model model){
 
         model.addAttribute("mouvements", mouvementService.findAll());
         return "mouvementListe";
+    }*/
+        @GetMapping("/mouvement/liste")
+        public String listeMouvements(Model model,
+                                      @RequestParam(defaultValue = "0") int page,
+                                      @RequestParam(defaultValue = "10") int size) {
+
+            Pageable pageable = PageRequest.of(page, size);
+            Page<Mouvement> mouvementPage = mouvementService.findAll(pageable);
+
+            model.addAttribute("mouvementPage", mouvementPage);
+            return "mouvementListe";
+        }
+
+
+    @GetMapping("/mouvement/confirm/{id}")
+    public String confirmMouvement(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Mouvement mouvement = mouvementService.findById(id);
+        if (mouvement != null && mouvement.getEtatMouvement().getLibelle().equalsIgnoreCase("EN COURS")) {
+            Produit produit = mouvement.getProduit();
+
+
+            EtatMouvement etatSortie = etatMouvementService.findById(2L);
+            if (etatSortie != null) {
+                mouvement.setEtatMouvement(etatSortie);
+
+                produit.setQuantite(produit.getQuantite() - mouvement.getQuantiteMvn());
+                produitService.save(produit);
+
+                mouvementService.save(mouvement);
+
+                redirectAttributes.addFlashAttribute("message", "Mouvement confirmé et mis à jour avec succès.");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Le statut SORTIE n'existe pas.");
+            }
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Mouvement non trouvé ou déjà confirmé.");
+        }
+        return "redirect:/mouvement/liste";
     }
+
+
 
 
 
