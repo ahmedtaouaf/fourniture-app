@@ -14,6 +14,12 @@
     <link href="/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="/vendor/select2/css/select2.min.css">
     <link href="/css/style.css" rel="stylesheet">
+    <style>
+        .custom-col {
+            max-width: 19%; /* Slightly less than 1/5th of the row */
+            flex: 0 0 19%;
+        }
+    </style>
 
 
 
@@ -69,14 +75,11 @@
                             <h4 class="card-title">Liste des mouvements</h4>
                         </div>
                         <div class="card-body">
-                            <!-- Row for cards -->
                             <div class="row">
-                                <!-- Thymeleaf iteration -->
-                                <div th:each="beneficiaire : ${listedivisions}" class="col-xl-4 col-xxl-6 col-lg-6 col-sm-6 mb-4">
+                                <div th:each="beneficiaire : ${listedivisions}" class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4 custom-col">
                                     <div class="card mb-3">
-                                        <!-- Dynamic image source with default fallback -->
                                         <img class="card-img-top"
-                                             th:src="${beneficiaire.avatar != null && beneficiaire.avatar.trim() != '' ? '/divisions/' + beneficiaire.avatar : '/divisions/dinfo.png'}"
+                                             th:src="${beneficiaire.avatar != null && beneficiaire.avatar.trim() != '' ? '/divisions/' + beneficiaire.avatar : '/divisions/noimage.png'}"
                                              alt="Card image cap"
                                         >
                                         <div class="card-body text-center">
@@ -84,13 +87,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- End Thymeleaf iteration -->
                             </div>
-                            <!-- End row for cards -->
                         </div>
                     </div>
                 </div>
             </div>
+
+
         </div>
     </div>
 

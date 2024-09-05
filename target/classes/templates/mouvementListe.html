@@ -104,18 +104,27 @@
 
                                 <!-- Pagination Controls -->
                                 <div>
-                                    <ul class="pagination justify-content-center">
-                                        <li th:classappend="${mouvementPage.hasPrevious()} ? '' : 'disabled'">
-                                            <a class="page-link" th:href="@{/mouvement/liste(page=${mouvementPage.number - 1}, size=${mouvementPage.size})}">Précédent</a>
+                                    <ul class="pagination pagination-circle justify-content-center">
+                                        <!-- Previous Page Link -->
+                                        <li class="page-item page-indicator" th:classappend="${mouvementPage.hasPrevious()} ? '' : 'disabled'">
+                                            <a class="page-link" th:href="@{/mouvement/liste(page=${mouvementPage.number - 1}, size=${mouvementPage.size})}">
+                                                <i class="icon-arrow-left"></i>
+                                            </a>
                                         </li>
-                                        <li th:each="i : ${#numbers.sequence(1, mouvementPage.totalPages)}"
-                                            th:classappend="${mouvementPage.number + 1 == i} ? 'active'">
+
+                                        <!-- Page Numbers -->
+                                        <li th:each="i : ${#numbers.sequence(1, mouvementPage.totalPages)}" th:classappend="${mouvementPage.number + 1 == i} ? 'active'" class="page-item">
                                             <a class="page-link" th:href="@{/mouvement/liste(page=${i - 1}, size=${mouvementPage.size})}" th:text="${i}"></a>
                                         </li>
-                                        <li th:classappend="${mouvementPage.hasNext()} ? '' : 'disabled'">
-                                            <a class="page-link" th:href="@{/mouvement/liste(page=${mouvementPage.number + 1}, size=${mouvementPage.size})}">Suivant</a>
+
+                                        <!-- Next Page Link -->
+                                        <li class="page-item page-indicator" th:classappend="${mouvementPage.hasNext()} ? '' : 'disabled'">
+                                            <a class="page-link" th:href="@{/mouvement/liste(page=${mouvementPage.number + 1}, size=${mouvementPage.size})}">
+                                                <i class="icon-arrow-right"></i>
+                                            </a>
                                         </li>
                                     </ul>
+
                                 </div>
                             </div>
                         </div>

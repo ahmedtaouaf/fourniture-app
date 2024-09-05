@@ -125,16 +125,25 @@
                                     </table>
                                 </div>
                                 <!-- Pagination Controls -->
-                                <div class="pagination">
-                                    <ul class="pagination justify-content-center">
-                                        <li th:classappend="${currentPage == 0} ? 'disabled'">
-                                            <a th:href="@{/produit-liste(page=${currentPage - 1})}" class="page-link">Previous</a>
+                                <div>
+                                    <ul class="pagination pagination-circle">
+                                        <!-- Previous Page Link -->
+                                        <li class="page-item page-indicator" th:classappend="${currentPage == 0} ? 'disabled'">
+                                            <a class="page-link" th:href="@{/produit-liste(page=${currentPage - 1})}" th:onclick="return ${currentPage > 0}">
+                                                <i class="icon-arrow-left"></i>
+                                            </a>
                                         </li>
-                                        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'">
-                                            <a th:href="@{/produit-liste(page=${i})}" class="page-link" th:text="${i + 1}">1</a>
+
+                                        <!-- Page Numbers -->
+                                        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == currentPage} ? 'active'" class="page-item">
+                                            <a class="page-link" th:href="@{/produit-liste(page=${i})}" th:text="${i + 1}"></a>
                                         </li>
-                                        <li th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
-                                            <a th:href="@{/produit-liste(page=${currentPage + 1})}" class="page-link">Next</a>
+
+                                        <!-- Next Page Link -->
+                                        <li class="page-item page-indicator" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
+                                            <a class="page-link" th:href="@{/produit-liste(page=${currentPage + 1})}" th:onclick="return ${currentPage + 1 < totalPages}">
+                                                <i class="icon-arrow-right"></i>
+                                            </a>
                                         </li>
                                     </ul>
                                 </div>
