@@ -103,15 +103,15 @@
                                     <table class="table table-responsive-sm">
                                         <thead>
                                         <tr>
-                                            <th>Produit</th>
-                                            <th>Quantité Actuelle</th>
-                                            <th>Modifier la Quantité</th>
+                                            <th style="color: #666666;">Produit</th>
+                                            <th style="color: #666666;">Quantité Actuelle</th>
+                                            <th style="color: #666666;">Modifier la Quantité</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr th:each="produit : ${produitList}">
-                                            <td th:text="${produit.libelle}"></td>
-                                            <td><span th:text="${produit.quantite} + ' PCS'"></span></td>
+                                            <td style="color: #666666;" th:text="${produit.libelle}"></td>
+                                            <td><span style="color: #666666;" th:text="${produit.quantite} + ' PCS'"></span></td>
                                             <td>
                                                 <form th:action="@{/produit-modifier}" method="post" class="form-inline">
                                                     <input type="hidden" name="produitId" th:value="${produit.id}" />
@@ -126,7 +126,7 @@
                                 </div>
                                 <!-- Pagination Controls -->
                                 <div>
-                                    <ul class="pagination pagination-circle">
+                                    <ul class="pagination pagination-circle justify-content-center">
                                         <!-- Previous Page Link -->
                                         <li class="page-item page-indicator" th:classappend="${currentPage == 0} ? 'disabled'">
                                             <a class="page-link" th:href="@{/produit-liste(page=${currentPage - 1})}" th:onclick="return ${currentPage > 0}">

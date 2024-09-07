@@ -78,25 +78,25 @@
                                     <table class="table table-responsive-sm">
                                         <thead>
                                         <tr>
-                                            <th>Produit</th>
-                                            <th>Date</th>
-                                            <th>Bénéficaire</th>
-                                            <th>Quantité</th>
-                                            <th>Etat</th>
-                                            <th>Action</th>
+                                            <th style="color: #666666;">Produit</th>
+                                            <th style="color: #666666;">Date</th>
+                                            <th style="color: #666666;">Bénéficaire</th>
+                                            <th style="color: #666666;">Quantité</th>
+                                            <th style="color: #666666;">Etat</th>
+                                            <th style="color: #666666;">Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr th:each="mouvement: ${mouvementPage.content}">
-                                            <td th:text="${mouvement.produit.libelle}"></td>
-                                            <td th:text="${mouvement.date}"></td>
-                                            <td th:text="${mouvement.beneficiaire.libelle}"></td>
-                                            <td th:text="${mouvement.quantiteMvn}"></td>
-                                            <td th:if="${mouvement.etatMouvement.libelle=='ENTREE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-info"></span></td>
-                                            <td th:if="${mouvement.etatMouvement.libelle=='SORTIE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-success"></span></td>
-                                            <td th:if="${mouvement.etatMouvement.libelle=='EN COURS'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-warning"></span></td>
-                                            <td th:if="${mouvement.etatMouvement.libelle=='AVANCE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-danger"></span></td>
-                                            <td th:if="${mouvement.etatMouvement.libelle=='EN COURS'}"><a th:href="@{/mouvement/confirm/{id}(id=${mouvement.id})}" class="btn btn-primary btn-sm">Confirmer</a></td>
+                                            <td style="color: #666666;" th:text="${mouvement.produit.libelle}"></td>
+                                            <td style="color: #666666;" th:text="${mouvement.date}"></td>
+                                            <td style="color: #666666;" th:text="${mouvement.beneficiaire.libelle}"></td>
+                                            <td style="color: #666666;" th:text="${mouvement.quantiteMvn}"></td>
+                                            <td style="color: #666666;" th:if="${mouvement.etatMouvement.libelle=='ENTREE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-info"></span></td>
+                                            <td style="color: #666666;" th:if="${mouvement.etatMouvement.libelle=='SORTIE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-success"></span></td>
+                                            <td style="color: #666666;" th:if="${mouvement.etatMouvement.libelle=='EN COURS'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-warning"></span></td>
+                                            <td style="color: #666666;" th:if="${mouvement.etatMouvement.libelle=='AVANCE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-danger"></span></td>
+                                            <td style="color: #666666;" th:if="${mouvement.etatMouvement.libelle=='EN COURS'}"><a th:href="@{/mouvement/confirm/{id}(id=${mouvement.id})}" class="btn btn-primary btn-sm">Confirmer</a></td>
                                         </tr>
                                         </tbody>
                                     </table>

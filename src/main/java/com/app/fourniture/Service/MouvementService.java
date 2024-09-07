@@ -39,4 +39,8 @@ public class MouvementService {
     public List<Mouvement> beneficiaireByEtatAvance(Long beneficiaire) {
         return mouvementRepository.beneficiairebyetatavance(beneficiaire);
     }
+
+    public List<Object[]> getLast10Mouvements() {
+        return mouvementRepository.findLast10Mouvements();
+    }
 }

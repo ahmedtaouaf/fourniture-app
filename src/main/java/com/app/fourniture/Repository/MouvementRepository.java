@@ -27,5 +27,17 @@ public interface MouvementRepository extends JpaRepository<Mouvement, Long> {
     """)
     List<Mouvement> beneficiairebyetatavance(@Param("beneficiaire") Long beneficiaire);
 
+    @Query("SELECT e.libelle, COUNT(m) FROM Mouvement m JOIN m.etatMouvement e GROUP BY e.libelle")
+    List<Object[]> countMouvementsByEtatMouvement();
+
+    @Query(value = "SELECT DATE_FORMAT(date, '%Y-%m') AS month, COUNT(*) FROM Mouvement GROUP BY DATE_FORMAT(date, '%Y-%m')", nativeQuery = true)
+    List<Object[]> countMouvementsPerMonth();
+
+    @Query(value = "SELECT p.libelle AS produit_libelle, m.date, b.libelle AS beneficiaire_libelle, m.quantite_mvn, e.libelle AS etatmouvement_libelle FROM mouvement m JOIN Produit p ON m.produit_id = p.id JOIN Beneficiaire b ON m.beneficiaire_id = b.id JOIN etat_mouvement e ON m.etatmouvement_id = e.id ORDER BY m.date DESC LIMIT 5", nativeQuery = true)
+    List<Object[]> findLast10Mouvements();
+
+
+
+
 
 }
