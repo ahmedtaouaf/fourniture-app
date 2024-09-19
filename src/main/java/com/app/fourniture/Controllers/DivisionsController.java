@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import java.time.format.DateTimeFormatter;
 
 import java.util.List;
 
@@ -29,16 +30,26 @@ public class DivisionsController {
         return "divisionsListe";
     }
 
+
+
     @GetMapping("/division/{id}")
     public String getBeneficiaireDetails(@PathVariable Long id, Model model) {
         Beneficiaire beneficiaire = beneficiaireService.findById(id);
 
-        List<Mouvement> listBeneficiaireByEtatAvance=mouvementService.beneficiaireByEtatAvance(id);
+        List<Mouvement> listBeneficiaireByEtatAvance = mouvementService.beneficiaireByEtatAvance(id);
+
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        listBeneficiaireByEtatAvance.forEach(mouvement -> {
+            String formattedDate = mouvement.getDate().format(formatter);
+            mouvement.setFormattedDate(formattedDate);
+        });
 
         model.addAttribute("beneficiaire", beneficiaire);
         model.addAttribute("mouvements", listBeneficiaireByEtatAvance);
         return "divisionsDetails";
     }
+
 
 
 }

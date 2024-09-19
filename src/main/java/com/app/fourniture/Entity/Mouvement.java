@@ -29,6 +29,9 @@ public class Mouvement {
     @JoinColumn(name = "etatmouvement_id", nullable = false)
     private EtatMouvement etatMouvement;
 
+    @Transient
+    private String formattedDate;
+
     @PrePersist
     protected void onCreate() {
         date = LocalDateTime.now();

@@ -14,6 +14,19 @@
     <link href="/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="/vendor/select2/css/select2.min.css">
     <link href="/css/style.css" rel="stylesheet">
+    <style>
+        @media print {
+            body {
+                font-size: 20px;
+            }
+            #printTable {
+                font-size: 20px;
+            }
+            h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
 
 
 
@@ -69,34 +82,53 @@
                             <h4 class="card-title">Liste Des Mouvements En Cours</h4>
                         </div>
                         <div class="card-body">
-                            <table class="table table-responsive-sm">
+                            <!-- Print button -->
+                            <div class="text-right mb-3">
+                                <button class="btn btn-primary" onclick="printTable()">Imprimer</button>
+                            </div>
+
+                            <!-- Table with movements -->
+                            <table id="printTable" class="table table-responsive-sm">
                                 <thead>
                                 <tr>
-                                    <th style="color: #666666;">Produit</th>
-                                    <th style="color: #666666;">Date</th>
-                                    <th style="color: #666666;">Bénéficaire</th>
-                                    <th style="color: #666666;">Quantité</th>
-                                    <th style="color: #666666;">Etat</th>
+                                    <th class="text-center" style="color: #666666;">Produit</th>
+                                    <th class="text-center" style="color: #666666;">Date</th>
+                                    <th class="text-center" style="color: #666666;">Bénéficaire</th>
+                                    <th class="text-center" style="color: #666666;">Quantité Mouvement</th>
+                                    <th class="text-center" style="color: #666666;">Quantité Total</th>
+                                    <th class="text-center" style="color: #666666;">Etat</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="mouvement: ${mouvements}">
-                                    <td th:text="${mouvement.produit.libelle}"></td>
-                                    <td th:text="${mouvement.date}"></td>
-                                    <td th:text="${mouvement.beneficiaire.libelle}"></td>
-                                    <td th:text="${mouvement.quantiteMvn}"></td>
-                                    <td th:if="${mouvement.etatMouvement.libelle=='ENTREE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-info"></span></td>
-                                    <td th:if="${mouvement.etatMouvement.libelle=='SORTIE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-success"></span></td>
-                                    <td th:if="${mouvement.etatMouvement.libelle=='EN COURS'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-warning"></span></td>
-                                    <td th:if="${mouvement.etatMouvement.libelle=='AVANCE'}"><span th:text="${mouvement.etatMouvement.libelle}" class="badge badge-danger"></span></td>
+                                    <td style="color: #666666;" class="text-center" th:text="${mouvement.produit.libelle}"></td>
+                                    <td style="color: #666666;" class="text-center" th:text="${mouvement.formattedDate}"></td>
+                                    <td style="color: #666666;" class="text-center" th:text="${mouvement.beneficiaire.libelle}"></td>
+
+                                    <td style="color: #666666;" class="text-center" th:text="${mouvement.quantiteMvn}"></td>
+                                    <td style="color: #666666;" class="text-center" th:text="${mouvement.produit.quantite}"></td>
+
+                                    <td th:if="${mouvement.etatMouvement.libelle=='ENTREE'}">
+                                        <span style="color: #666666;"  th:text="${mouvement.etatMouvement.libelle}" class="badge badge-info text-center"></span>
+                                    </td>
+                                    <td th:if="${mouvement.etatMouvement.libelle=='SORTIE'}">
+                                        <span style="color: #666666;" th:text="${mouvement.etatMouvement.libelle}" class="badge badge-success text-center"></span>
+                                    </td>
+                                    <td th:if="${mouvement.etatMouvement.libelle=='EN COURS'}">
+                                        <span style="color: #666666;" th:text="${mouvement.etatMouvement.libelle}" class="badge badge-warning text-center"></span>
+                                    </td>
+                                    <td th:if="${mouvement.etatMouvement.libelle=='AVANCE'}">
+                                        <span style="color: #666666;" th:text="${mouvement.etatMouvement.libelle}" class="badge badge-danger text-center"></span>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </div>
             </div>
+
+
         </div>
     </div>
 
@@ -129,7 +161,17 @@
 <script src="/vendor/global/global.min.js"></script>
 <script src="/js/quixnav-init.js"></script>
 <script src="/js/custom.min.js"></script>
+<!-- JavaScript function to print the table -->
+<script>
+    function printTable() {
+        var printContents = document.getElementById('printTable').outerHTML;
+        var originalContents = document.body.innerHTML;
 
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }
+</script>
 
 <!-- Vectormap -->
 <script src="/vendor/raphael/raphael.min.js"></script>
